@@ -53,3 +53,30 @@
   ([template message template-content]
     (call-mandrill "messages/send-template" {:template_name template :message message :template_content template-content})))
 
+(defn user-info
+  "Get information about your Mandrill account
+
+  See:
+
+  https://mandrillapp.com/api/docs/users.html#method=info"
+  []
+  (call-mandrill "users/info" {}))
+
+(defn ping
+  "Validate an API key and respond to a ping
+
+  See:
+
+  https://mandrillapp.com/api/docs/users.html#method=ping"
+  []
+  (call-mandrill "users/ping" {}))
+
+(defn senders
+  "Return the senders that have tried to use this account, both verified and unverified.
+
+  See:
+
+  https://mandrillapp.com/api/docs/users.html#method=senders"
+  []
+  (call-mandrill "users/senders" {}))
+

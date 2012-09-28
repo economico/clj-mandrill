@@ -49,6 +49,25 @@ See [Send message template API doc](https://mandrillapp.com/api/docs/messages.ht
                   :to [{:email "bob@test.com" :name "Bob"})
 ```
 
+### User information APIS
+
+These are helpful for testing out your connection and validating your emails.
+
+See [Users API](https://mandrillapp.com/api/docs/users.html)
+
+```clojure
+=> (ping) ;; Ping server and validate keys
+"PONG"
+
+=> (user-info)
+{:username "YOURUSERNAME", :created_at "2012-06-29 17:47:55", :public_id "...", :reputation 50, :hourly_quota 25, :backlog 0, :stats {:today {:sent 5, :hard_bounces 0, :complaints 0, :unique_opens 1, :rejects 0, :clicks 1, :soft_bounces 0, :opens 1, :unsubs 0, :unique_clicks 1}, :last_7_days {:sent 5, :hard_bounces 0, :complaints 0, :unique_opens 1, :rejects 0, :clicks 1, :soft_bounces 0, :opens 1, :unsubs 0, :unique_clicks 1}, :last_30_days {:sent 5, :hard_bounces 0, :complaints 0, :unique_opens 1, :rejects 0, :clicks 1, :soft_bounces 0, :opens 1, :unsubs 0, :unique_clicks 1}, :last_60_days {:sent 5, :hard_bounces 0, :complaints 0, :unique_opens 1, :rejects 0, :clicks 1, :soft_bounces 0, :opens 1, :unsubs 0, :unique_clicks 1}, :last_90_days {:sent 5, :hard_bounces 0, :complaints 0, :unique_opens 1, :rejects 0, :clicks 1, :soft_bounces 0, :opens 1, :unsubs 0, :unique_clicks 1}, :all_time {:sent 5, :hard_bounces 0, :complaints 0, :unique_opens 1, :rejects 0, :clicks 1, :soft_bounces 0, :opens 1, :unsubs 0, :unique_clicks 1}}}
+
+=> (senders)
+[{:sent 5, :hard_bounces 0, :complaints 0, :unique_opens 1, :rejects 0, :clicks 1, :soft_bounces 0, :created_at "2012-09-28 14:57:41", :opens 1, :unsubs 0, :address "alice@test.com", :unique_clicks 1}]
+
+```
+
+
 ## Configuring API Keys
 
 The easiest way to set it up is to set your api key in the MANDRILL_API_KEY environment variable or system property.

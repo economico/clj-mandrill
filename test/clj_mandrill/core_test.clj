@@ -65,6 +65,35 @@
                    (:message resp)))))))
 
 
+(deftest should-get-user-info
+  (binding [ *mandrill-api-key* "abcdefg" ]
+    (with-fake-routes
+      { "https://mandrillapp.com/api/1.0/users/info.json"
+        (fn [req] (let [ body (slurp (.getContent (:body req))) ]
+                    {:status 200 :headers {"Content-type" "application/json"} :body body }))}
+
+      (let [ resp (user-info)]
+            (is (= "abcdefg" (:key resp)))))))
+
+(deftest should-ping
+  (binding [ *mandrill-api-key* "abcdefg" ]
+    (with-fake-routes
+      { "https://mandrillapp.com/api/1.0/users/ping.json"
+        (fn [req] (let [ body (slurp (.getContent (:body req))) ]
+                    {:status 200 :headers {"Content-type" "application/json"} :body body }))}
+
+      (let [ resp (ping)]
+            (is (= "abcdefg" (:key resp)))))))
+
+(deftest should-fetch-senders
+  (binding [ *mandrill-api-key* "abcdefg" ]
+    (with-fake-routes
+      { "https://mandrillapp.com/api/1.0/users/senders.json"
+        (fn [req] (let [ body (slurp (.getContent (:body req))) ]
+                    {:status 200 :headers {"Content-type" "application/json"} :body body }))}
+
+      (let [ resp (senders)]
+            (is (= "abcdefg" (:key resp)))))))
 
 
 
