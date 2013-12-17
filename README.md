@@ -67,6 +67,34 @@ See [Users API](https://mandrillapp.com/api/docs/users.html)
 
 ```
 
+### Use the library in Java
+
+
+Import the library in your project
+
+
+```java
+import clj_mandrill.interop;
+```
+
+
+You can call any method listed in the [Mandrill V1.0 API](https://mandrillapp.com/api/docs/).
+
+
+```java
+interop.callMandrill("API_KEY", "users/info", "{}", ""));
+```
+
+
+Or you can use shortcut for the send tepmlate method
+
+
+```java
+interop.sendTemplate("API_KEY",
+                     "template-name",
+                     "{\"subject\" : \"Just a note\", \"from_email\" : \"alice@test.com\", \"from_name\"  : \"Alice\", \"to\" : [{\"email\" : \"bob@test.com\", \"name\"  : \"Bob\"}]}", "[{\"name\"    : \"example name\", \"content\" : \"example content\"}]");
+```
+
 
 ## Configuring API Keys
 
