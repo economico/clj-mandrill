@@ -1,9 +1,10 @@
 (ns clj-mandrill.core-test
-  (:use clojure.test
-        clj-mandrill.core
-        clj-http.fake
-        cheshire.core))
-
+ (:require [clj-time.core :as dt]
+           [clj-time.format :as dtf])
+ (:use clojure.test
+       clj-mandrill.core
+       clj-http.fake
+       cheshire.core))
 
 (deftest url-api-keys
   (is (= "https://mandrillapp.com/api/1.0/" mandrill-url))
@@ -48,6 +49,7 @@
             (is (= "abcdefg" (:key resp)))
             (is (= "verify_email" (:template_name resp)))
             (is (= [] (:template_content resp)))
+            (is (not (empty?  (:send_at resp))))
 
             (is (= {:subject "Just a note" :from_email "alice@test.com" :from_name "Alice"
                                   :to [{:email "bob@test.com" :name "Bob"}]}
@@ -59,6 +61,21 @@
                                   [{:name "HEADER" :content "My Header"}])]
             (is (= "abcdefg" (:key resp)))
             (is (= "verify_email" (:template_name resp)))
+            (is (= [{:name "HEADER" :content "My Header"}] (:template_content resp)))
+            (is (not (empty?  (:send_at resp))))
+            (is (= {:subject "Just a note" :from_email "alice@test.com" :from_name "Alice"
+                                  :to [{:email "bob@test.com" :name "Bob"}]}
+                   (:message resp))))
+
+
+
+      (let [ resp (send-template "verify_email" {:subject "Just a note" :from_email "alice@test.com" :from_name "Alice"
+                                  :to [{:email "bob@test.com" :name "Bob"}]}
+                                  [{:name "HEADER" :content "My Header"}]
+                                  "2014-02-17 16:09:26")]
+            (is (= "abcdefg" (:key resp)))
+            (is (= "verify_email" (:template_name resp)))
+            (is (= "2014-02-17 16:09:26" (:send_at resp)))
             (is (= [{:name "HEADER" :content "My Header"}] (:template_content resp)))
             (is (= {:subject "Just a note" :from_email "alice@test.com" :from_name "Alice"
                                   :to [{:email "bob@test.com" :name "Bob"}]}

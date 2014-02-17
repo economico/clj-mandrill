@@ -1,6 +1,10 @@
 (ns clj-mandrill.core
-  (:require [clj-http.client :as client])
+  (:require [clj-http.client :as client]
+            [clj-time.core :as dt]
+            [clj-time.format :as dtf])
   (:use [cheshire.core]))
+
+(def mandrill-datetime-formatter (dtf/formatter "YYYY-MM-dd H:mm:ss"))
 
 (def ^:dynamic *mandrill-api-key*
   (let [env (System/getenv)]
@@ -48,10 +52,9 @@
   See:
 
   https://mandrillapp.com/api/docs/messages.html#method=send-template"
-  ([template message]
-    (send-template template message []))
-  ([template message template-content]
-    (call-mandrill "messages/send-template" {:template_name template :message message :template_content template-content})))
+  ([template message] (send-template template message [] (dtf/unparse mandrill-datetime-formatter (dt/now))))
+  ([template message template-content] (send-template template message template-content (dtf/unparse mandrill-datetime-formatter (dt/now))))
+  ([template message template-content send_at] (call-mandrill "messages/send-template" {:template_name template :message message :template_content template-content :send_at send_at })))
 
 (defn user-info
   "Get information about your Mandrill account
